@@ -44,7 +44,7 @@
       this.FolderPath_TextBox.Name = "FolderPath_TextBox";
       this.FolderPath_TextBox.ReadOnly = true;
       this.FolderPath_TextBox.Size = new System.Drawing.Size(504, 20);
-      this.FolderPath_TextBox.TabIndex = 2;
+      this.FolderPath_TextBox.TabIndex = 3;
       // 
       // SelectedPath_Label
       // 
@@ -60,7 +60,7 @@
       this.Run_Button.Location = new System.Drawing.Point(522, 160);
       this.Run_Button.Name = "Run_Button";
       this.Run_Button.Size = new System.Drawing.Size(75, 23);
-      this.Run_Button.TabIndex = 5;
+      this.Run_Button.TabIndex = 4;
       this.Run_Button.Text = "Run";
       this.Run_Button.UseVisualStyleBackColor = true;
       this.Run_Button.Click += new System.EventHandler(this.RunButton_Click);
@@ -70,7 +70,7 @@
       this.Browse_Button.Location = new System.Drawing.Point(248, 64);
       this.Browse_Button.Name = "Browse_Button";
       this.Browse_Button.Size = new System.Drawing.Size(75, 23);
-      this.Browse_Button.TabIndex = 1;
+      this.Browse_Button.TabIndex = 2;
       this.Browse_Button.Text = "browse";
       this.Browse_Button.UseVisualStyleBackColor = true;
       this.Browse_Button.Click += new System.EventHandler(this.BrowseButton_Click);
@@ -98,7 +98,7 @@
       this.DragNDrop_Panel.Location = new System.Drawing.Point(15, 12);
       this.DragNDrop_Panel.Name = "DragNDrop_Panel";
       this.DragNDrop_Panel.Size = new System.Drawing.Size(582, 115);
-      this.DragNDrop_Panel.TabIndex = 4;
+      this.DragNDrop_Panel.TabIndex = 1;
       this.DragNDrop_Panel.DragDrop += new System.Windows.Forms.DragEventHandler(this.DragDrop_Event);
       this.DragNDrop_Panel.DragOver += new System.Windows.Forms.DragEventHandler(this.DragOver_Event);
       // 
