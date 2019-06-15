@@ -18,3 +18,13 @@ C:\Users\Gianluca\Desktop\ProjektUtopia-master\ProjektUtopia\ProjektUtopia\obj\D
 C:\Users\Gianluca\Desktop\ProjektUtopia-master\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.pdb
 C:\Users\Gianluca\Desktop\ProjektUtopia-master\ProjektUtopia\ProjektUtopia\bin\Debug\ProjektUtopia.pdb
 C:\Users\Gianluca\Desktop\ProjektUtopia-master\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.MainForm.resources
+D:\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\bin\Debug\ProjektUtopia.exe.config
+D:\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\bin\Debug\ProjektUtopia.exe
+D:\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\bin\Debug\ProjektUtopia.pdb
+D:\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.csprojAssemblyReference.cache
+D:\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.MainForm.resources
+D:\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.Properties.Resources.resources
+D:\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.csproj.GenerateResource.cache
+D:\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.csproj.CoreCompileInputs.cache
+D:\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.exe
+D:\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.pdb
