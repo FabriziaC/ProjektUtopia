@@ -8,3 +8,13 @@ C:\Users\fabri\source\repos\Berufschule\ProjektUtopia\ProjektUtopia\obj\Debug\Pr
 C:\Users\fabri\source\repos\Berufschule\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.exe
 C:\Users\fabri\source\repos\Berufschule\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.pdb
 C:\Users\fabri\source\repos\Berufschule\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.Form1.resources
+C:\Users\Gianluca\Desktop\ProjektUtopia-master\ProjektUtopia\ProjektUtopia\bin\Debug\ProjektUtopia.exe.config
+C:\Users\Gianluca\Desktop\ProjektUtopia-master\ProjektUtopia\ProjektUtopia\bin\Debug\ProjektUtopia.exe
+C:\Users\Gianluca\Desktop\ProjektUtopia-master\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.csprojAssemblyReference.cache
+C:\Users\Gianluca\Desktop\ProjektUtopia-master\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.Properties.Resources.resources
+C:\Users\Gianluca\Desktop\ProjektUtopia-master\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.csproj.GenerateResource.cache
+C:\Users\Gianluca\Desktop\ProjektUtopia-master\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.csproj.CoreCompileInputs.cache
+C:\Users\Gianluca\Desktop\ProjektUtopia-master\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.exe
+C:\Users\Gianluca\Desktop\ProjektUtopia-master\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.pdb
+C:\Users\Gianluca\Desktop\ProjektUtopia-master\ProjektUtopia\ProjektUtopia\bin\Debug\ProjektUtopia.pdb
+C:\Users\Gianluca\Desktop\ProjektUtopia-master\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.MainForm.resources
