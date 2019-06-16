@@ -50,6 +50,7 @@
   <ItemGroup>
     <Compile Include="Codemetrik.cs" />
     <Compile Include="FileManager.cs" />
+    <Compile Include="RegexFilter.cs" />
     <Compile Include="View\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
