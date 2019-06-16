@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using static ProjektUtopia.FileManager;
+using static ProjektUtopia.Codemetrik;
 
 namespace ProjektUtopia
 {
@@ -16,6 +12,10 @@ namespace ProjektUtopia
     {
       InitializeComponent();
     }
+
+    private void BrowseButton_Click(object sender, EventArgs e) => SelectAndSetPathForTextBox(this.FolderPath_TextBox, this.SelectedFile_FolderBrowserDialog);
+
+    private void FileLocation_Button_Click(object sender, EventArgs e) => SelectAndSetPathForTextBox(this.fileLocation_TextBox, this.FileLocation_FolderBrowserDialog);
 
     private void DragDrop_Event(object sender, DragEventArgs e)
     {
@@ -34,14 +34,33 @@ namespace ProjektUtopia
 
     private void RunButton_Click(object sender, EventArgs e)
     {
-      MessageBox.Show("Dateien verarbeiten: " + FolderPath_TextBox.Text);
+      string path = this.FolderPath_TextBox.Text;
+      string[] pathList;
+
+      if (FileExist(path))
+      {
+        pathList = new string[1];
+        pathList[0] = path;
+      }
+      else if (DirectoryExist(path))
+      {
+        pathList = GetAllFilesOfFolder(this.FolderPath_TextBox.Text);
+      }
+      else
+      {
+        MessageBox.Show(String.Format("'{0}' ist kein gültiger Phad",
+                                      FolderPath_TextBox.Text));
+        return;
+      }
+      Run(pathList);
+
     }
 
-    private void BrowseButton_Click(object sender, EventArgs e)
+    private void SelectAndSetPathForTextBox(TextBox textBox, FolderBrowserDialog foderBrowserDialog)
     {
-      if (this.FolderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+      if (foderBrowserDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
       {
-        FolderPath_TextBox.Text = this.FolderBrowserDialog.SelectedPath;
+        textBox.Text = foderBrowserDialog.SelectedPath;
       }
     }
   }
