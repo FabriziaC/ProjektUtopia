@@ -7,5 +7,9 @@
     Modifiers _modifiers;
     string _retrunValue;
 
+    public Method()
+    {
+
+    }
   }
 }

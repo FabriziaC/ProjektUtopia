@@ -9,8 +9,19 @@ namespace ProjektUtopia
     Modifiers _modifiers;
     List<Propertie> _properties;
     List<Method> _methodLists;
+    List<string> _error;
 
     public Class()
+    {
+
+    }
+
+    public void AddNewPropetie()
+    {
+
+    }
+
+    public void AddNewMethode()
     {
 
     }
