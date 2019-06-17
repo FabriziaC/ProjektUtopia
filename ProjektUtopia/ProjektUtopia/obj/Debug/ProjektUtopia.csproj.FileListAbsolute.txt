@@ -28,3 +28,13 @@ D:\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.cspr
 D:\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.csproj.CoreCompileInputs.cache
 D:\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.exe
 D:\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.pdb
+C:\Users\Nikol\Documents\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\bin\Debug\ProjektUtopia.exe.config
+C:\Users\Nikol\Documents\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\bin\Debug\ProjektUtopia.exe
+C:\Users\Nikol\Documents\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\bin\Debug\ProjektUtopia.pdb
+C:\Users\Nikol\Documents\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.csprojAssemblyReference.cache
+C:\Users\Nikol\Documents\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.MainForm.resources
+C:\Users\Nikol\Documents\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.Properties.Resources.resources
+C:\Users\Nikol\Documents\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.csproj.GenerateResource.cache
+C:\Users\Nikol\Documents\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.csproj.CoreCompileInputs.cache
+C:\Users\Nikol\Documents\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.exe
+C:\Users\Nikol\Documents\GitHub\ProjektUtopia\ProjektUtopia\ProjektUtopia\obj\Debug\ProjektUtopia.pdb

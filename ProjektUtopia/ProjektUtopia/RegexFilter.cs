@@ -10,7 +10,7 @@ namespace ProjektUtopia
     /// <summary>
     /// Collection of diffrent filters currently for removing comments
     /// </summary>
-    public class RegexFilter
+    public static class RegexFilter
     {
 
         /// <summary>
@@ -19,19 +19,25 @@ namespace ProjektUtopia
         public static readonly string SplittColumns = @"\n";
 
         /// <summary>
-        /// Regex to Filter out a simple // comment
+        /// Regex to represent a  // comment
         /// </summary>
         public static readonly string regularComments = @"[/]{2}.*";
 
         /// <summary>
-        /// Regex to Filter out /*.......*/  comments
+        /// Regex represent /*.......*/  comments
         /// </summary>
-        public static readonly string Comments = @"?[/]{1}[*]{1}[\s\S]{0,}?[*]{1}[/]{1}";
+        public static readonly string comments = @"?[/]{1}[*]{1}[\s\S]{0,}?[*]{1}[/]{1}";
 
         /// <summary>
-        /// Regex to Filter out XML-Comments -> /// and hope for the best
+        /// Regex represent XML-Comments -> /// and hope for the best
         /// </summary>
-        public static readonly string XMLComments = @"[/]{3}[\s]{1}<summary>[\s\S]+<[/]summary>";
+        public static readonly string xmlComments = @"[/]{3}[\s]{1}<summary>[\s\S]+<[/]summary>";
+
+        /// <summary>
+        /// Expression representing methods
+        /// </summary>
+        public static readonly string methods = @"(public|private|sealed|protected|internal){1}[\s]{1,}?(static)?[\s]?(\w)+[\s]+(\w)+[\s]*(\w)+[\s]*[(].+[)][\S\s]+?[\n]*[{][\S\s]*[}]}";
+
 
         /// <summary>
         /// Filters out all Comments for strings, Lists of strings or string arrays
@@ -76,9 +82,9 @@ namespace ProjektUtopia
         /// <returns></returns>
         public static List<string> FilterComments(string code)
         {
-            code = FilterOutByRegex(code, XMLComments);
+            code = FilterOutByRegex(code, xmlComments);
 
-            code = FilterOutByRegex(code, Comments);
+            code = FilterOutByRegex(code, comments);
 
             code = FilterOutByRegex(code, regularComments);
 
@@ -147,10 +153,10 @@ namespace ProjektUtopia
         {
             string wrongplacement = @".{1}";
             long amount = 0;
-            amount = CountByRegex(code, wrongplacement + XMLComments);
-            code = FilterOutByRegex(code, XMLComments);
-            amount = amount + CountByRegex(code, wrongplacement + Comments);
-            code = FilterOutByRegex(code, Comments);
+            amount = CountByRegex(code, wrongplacement + xmlComments);
+            code = FilterOutByRegex(code, xmlComments);
+            amount = amount + CountByRegex(code, wrongplacement + comments);
+            code = FilterOutByRegex(code, comments);
             amount = amount + CountByRegex(code, wrongplacement + regularComments);
             return amount;
         }
@@ -158,12 +164,50 @@ namespace ProjektUtopia
         public static long CountAllComments(string code)
         {
             long amount = 0;
-            amount = CountByRegex(code,XMLComments);
-            code = FilterOutByRegex(code, XMLComments);
-            amount = amount + CountByRegex(code,Comments);
-            code = FilterOutByRegex(code, Comments);
+            amount = CountByRegex(code,xmlComments);
+            code = FilterOutByRegex(code, xmlComments);
+            amount = amount + CountByRegex(code,comments);
+            code = FilterOutByRegex(code, comments);
             amount = amount + CountByRegex(code,regularComments);
             return amount;
         }
+
+        public static List<string> ReturnAllMatches(string text, string regexString)
+        {
+            List<string> matches = new List<string>();
+
+            Regex regex = new Regex(regexString);
+
+            MatchCollection collection = regex.Matches(text);
+
+            for (int i = 0; i < collection.Count; i++)
+            {
+                matches.Add(collection[i].Value);
+            }
+
+            return matches;
+        }
+
+        /// <summary>
+        /// Gets all the info from a method in a sring array 0 = public etc, 1 = static ? , 2 = returntype, 3 = name, 4 = paramter , 5 = content
+        /// </summary>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        internal static string[] GetMethodInfo(string method)
+        {
+            
+            string[] methodInfo = new string[12];
+
+            //beispiel
+            methodInfo[5] = ReturnAllMatches(method, @"[{][\S\s]+[}]").First();
+
+            methodInfo[0] = 
+            methodInfo[1] =
+            methodInfo[2] =
+            methodInfo[3] =
+
+            return methodInfo;
+        }
+
     }
 }
