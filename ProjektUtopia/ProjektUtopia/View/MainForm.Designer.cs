@@ -47,7 +47,7 @@
       this.FolderPath_TextBox.Location = new System.Drawing.Point(15, 185);
       this.FolderPath_TextBox.Name = "FolderPath_TextBox";
       this.FolderPath_TextBox.Size = new System.Drawing.Size(504, 20);
-      this.FolderPath_TextBox.TabIndex = 3;
+      this.FolderPath_TextBox.TabIndex = 7;
       // 
       // SelectedPath_Label
       // 
@@ -63,7 +63,7 @@
       this.Run_Button.Location = new System.Drawing.Point(522, 183);
       this.Run_Button.Name = "Run_Button";
       this.Run_Button.Size = new System.Drawing.Size(75, 23);
-      this.Run_Button.TabIndex = 4;
+      this.Run_Button.TabIndex = 8;
       this.Run_Button.Text = "Run";
       this.Run_Button.UseVisualStyleBackColor = true;
       this.Run_Button.Click += new System.EventHandler(this.RunButton_Click);
@@ -73,7 +73,7 @@
       this.Browse_Button.Location = new System.Drawing.Point(248, 64);
       this.Browse_Button.Name = "Browse_Button";
       this.Browse_Button.Size = new System.Drawing.Size(75, 23);
-      this.Browse_Button.TabIndex = 2;
+      this.Browse_Button.TabIndex = 3;
       this.Browse_Button.Text = "browse";
       this.Browse_Button.UseVisualStyleBackColor = true;
       this.Browse_Button.Click += new System.EventHandler(this.BrowseButton_Click);
@@ -84,7 +84,7 @@
       this.DragNDrop_Label.Location = new System.Drawing.Point(210, 34);
       this.DragNDrop_Label.Name = "DragNDrop_Label";
       this.DragNDrop_Label.Size = new System.Drawing.Size(158, 13);
-      this.DragNDrop_Label.TabIndex = 3;
+      this.DragNDrop_Label.TabIndex = 2;
       this.DragNDrop_Label.Text = "Drag and drop your file or folder ";
       // 
       // DragNDrop_Panel
@@ -118,7 +118,7 @@
       this.fileLocation_label.Location = new System.Drawing.Point(15, 129);
       this.fileLocation_label.Name = "fileLocation_label";
       this.fileLocation_label.Size = new System.Drawing.Size(70, 13);
-      this.fileLocation_label.TabIndex = 6;
+      this.fileLocation_label.TabIndex = 4;
       this.fileLocation_label.Text = "File Location:";
       // 
       // fileLocation_Button
@@ -126,7 +126,7 @@
       this.fileLocation_Button.Location = new System.Drawing.Point(419, 144);
       this.fileLocation_Button.Name = "fileLocation_Button";
       this.fileLocation_Button.Size = new System.Drawing.Size(178, 23);
-      this.fileLocation_Button.TabIndex = 7;
+      this.fileLocation_Button.TabIndex = 6;
       this.fileLocation_Button.Text = "Select File Location";
       this.fileLocation_Button.UseVisualStyleBackColor = true;
       this.fileLocation_Button.Click += new System.EventHandler(this.FileLocation_Button_Click);
