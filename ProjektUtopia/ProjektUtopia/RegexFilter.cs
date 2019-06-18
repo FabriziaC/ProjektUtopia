@@ -38,6 +38,22 @@ namespace ProjektUtopia
         /// </summary>
         public static readonly string methods = @"(public|private|sealed|protected|internal){1}[\s]{1,}?(static)?[\s]?(\w)+[\s]+(\w)+[\s]*(\w)+[\s]*[(].+[)][\S\s]+?[\n]*[{][\S\s]*[}]}";
 
+        /// <summary>
+        /// regex string representing acces modifiers
+        /// </summary>
+        private static readonly string accesModifier = @"^(public|private|sealed|protected|internal)[\s]+";
+
+        private static readonly string staticModifier = @"^static";
+        
+        /// <summary>
+        /// regex representing the content between { ....} brackets
+        /// </summary>
+        private static readonly string curvedBracketContent = @"[{][\s\S]+?[}]";
+
+        /// <summary>
+        /// regex representing the content between ( .... ) brackets
+        /// </summary>
+        private static readonly string roundBRacketContent = @"[(].{0,}?[)]";
 
         /// <summary>
         /// Filters out all Comments for strings, Lists of strings or string arrays
@@ -161,6 +177,11 @@ namespace ProjektUtopia
             return amount;
         }
 
+        /// <summary>
+        /// returns all comments in a text
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
         public static long CountAllComments(string code)
         {
             long amount = 0;
@@ -172,6 +193,12 @@ namespace ProjektUtopia
             return amount;
         }
 
+        /// <summary>
+        /// Returns all text matching a given regex as a list of strings
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="regexString"></param>
+        /// <returns></returns>
         public static List<string> ReturnAllMatches(string text, string regexString)
         {
             List<string> matches = new List<string>();
@@ -189,25 +216,88 @@ namespace ProjektUtopia
         }
 
         /// <summary>
-        /// Gets all the info from a method in a sring array 0 = public etc, 1 = static ? , 2 = returntype, 3 = name, 4 = paramter , 5 = content
+        /// returns the acces modifiers to a method or anything really that has the same name
         /// </summary>
         /// <param name="method"></param>
         /// <returns></returns>
-        internal static string[] GetMethodInfo(string method)
+        public static AccessModifiers GetAccesModifier(string text)
         {
-            
-            string[] methodInfo = new string[12];
+            Regex regex = new Regex(accesModifier);
 
-            //beispiel
-            methodInfo[5] = ReturnAllMatches(method, @"[{][\S\s]+[}]").First();
+            Match match = regex.Match(text);
 
-            methodInfo[0] = 
-            methodInfo[1] =
-            methodInfo[2] =
-            methodInfo[3] =
+            return ParseEnum<AccessModifiers>(match.Value);
 
-            return methodInfo;
         }
+
+        /// <summary>
+        /// tries to identify a modifier inside the text, returns the first match  
+        /// </summary>
+        /// <param name="text"></param>
+        /// <returns></returns>
+        public static Modifiers GetModifiers(string text)
+        {
+            string modifiers = @"(Abstract|Async|Const|Event|Extern|In|Out|Override|Readonly|Sealed|Static|Unsafe|Virtial|Volatile";
+            Regex regex = new Regex(modifiers);
+            Match match = regex.Match(text);
+
+            return ParseEnum<Modifiers>(match.Value);
+        }
+
+        /// <summary>
+        /// Compares an enum to a string and returns the corrispondig value
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static T ParseEnum<T>(string value)
+        {
+            return (T)Enum.Parse(typeof(T), value, true);
+        }
+
+        /// <summary>
+        /// returns the start as well as the end position of an expresion in the text
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="regexString"></param>
+        /// <returns></returns>
+        public static int[] GetStartAndEndByRegex(string text, string regexString)
+        {
+            int[] values = new int[2];
+
+            Regex regex = new Regex(regexString);
+
+            //ToDo
+
+            return values;
+        }
+
+        /// <summary>
+        /// replace a text-snippet matching the regex with an emtpy string
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="regexString"></param>
+        /// <returns></returns>
+        public static string ReplaceRegex(string text, string regexString)
+        {
+            Regex regex = new Regex(regexString);
+            return regex.Replace(text,string.Empty);
+        }
+
+        /// <summary>
+        /// replace a text-snippet matching the regex with the replacment string
+        /// </summary>
+        /// <param name="text"></param>
+        /// <param name="regexString"></param>
+        /// <param name="replacment"></param>
+        /// <returns></returns>
+        public static string ReplaceRegex(string text, string regexString, string replacment)
+        {
+            Regex regex = new Regex(regexString);
+            return regex.Replace(text, replacment);
+        }
+
+
 
     }
 }
