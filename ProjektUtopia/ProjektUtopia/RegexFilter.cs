@@ -36,7 +36,7 @@ namespace ProjektUtopia
         /// <summary>
         /// Expression representing methods
         /// </summary>
-        public static readonly string methods = @"(public|private|sealed|protected|internal){1}[\s]{1,}?(static)?[\s]?(\w)+[\s]+(\w)+[\s]*(\w)+[\s]*[(].+[)][\S\s]+?[\n]*[{][\S\s]*[}]}";
+        public static readonly string methods = @"(public|private|sealed|protected|internal){1}[\s]{1,}?(static)?[\s]?(\w)+[\s]+(\w)+[\s]*(\w)+[\s]*[(].{0,}?[)][\S\s]+?[\n]*[{][\S\s]*[}]";
 
         /// <summary>
         /// regex string representing acces modifiers
