@@ -7,16 +7,12 @@ using System.Threading.Tasks;
 
 namespace ProjektUtopia
 {
-    /// <summary>
-    /// Collection of diffrent filters currently for removing comments
-    /// </summary>
-    public static class RegexFilter
+    class RegexString
     {
-
         /// <summary>
         /// Regex to splitt a text by new lines
         /// </summary>
-        public static readonly string SplittColumns = @"\n";
+        public static readonly string SplittColumns = @".+";
 
         /// <summary>
         /// Regex to represent a  // comment
@@ -36,268 +32,47 @@ namespace ProjektUtopia
         /// <summary>
         /// Expression representing methods
         /// </summary>
-        public static readonly string methods = @"(public|private|sealed|protected|internal){1}[\s]{1,}?(static)?[\s]?(\w)+[\s]+(\w)+[\s]*(\w)+[\s]*[(].{0,}?[)][\S\s]+?[\n]*[{][\S\s]*[}]";
+        public static readonly string methods = @"(public|private|sealed|protected|internal){1}[\s]{1,}?(static)?[\s]?(\w)+[\s]+(\w)+[\s]*(\w)+[\s]*[(].{0,}?[)][\S\s]+?[\n]*[{][\S\s]{0,}?[}]";
+
+        /// <summary>
+        /// Expression representing the mehtods head
+        /// </summary>
+        public static readonly string methodHead = @"(public|private|sealed|protected|internal){1}[\s]{1,}?(static)?[\s]?(\w)+[\s]+(\w)+[\s]*(\w)+[\s]*";
 
         /// <summary>
         /// regex string representing acces modifiers
         /// </summary>
-        private static readonly string accesModifier = @"^(public|private|sealed|protected|internal)[\s]+";
+        public static readonly string accesModifier = @"^(public|private|sealed|protected|internal|private sealed|private internal)[\s]+";
 
-        private static readonly string staticModifier = @"^static";
-        
+        /// <summary>
+        /// Expression representing the static modifier for Regex operations
+        /// </summary>
+        public static readonly string staticModifier = @"^static";
+
         /// <summary>
         /// regex representing the content between { ....} brackets
         /// </summary>
-        private static readonly string curvedBracketContent = @"[{][\s\S]+?[}]";
+        public static readonly string curvedBracketContent = @"[{][\s\S]+[}]";
 
         /// <summary>
         /// regex representing the content between ( .... ) brackets
         /// </summary>
-        private static readonly string roundBRacketContent = @"[(].{0,}?[)]";
+        public static readonly string roundBRacketContent = @"[(][\s\S]+[)]";
 
         /// <summary>
-        /// Filters out all Comments for strings, Lists of strings or string arrays
+        /// Expresion representing a class for regex operations, without acces modifiers and others like public or abstract
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static List<string> FilterOutCommentsAdapter<T>(T text) where T : class
-        {
-            string code = null;
-            if (typeof(T) != typeof(string) && typeof(T) != typeof(string[]) && typeof(T) != typeof(List<string>))
-            {
-                throw new Exception("The function requires a string,string[] or List<string> variable");
-            }
-            if (typeof(T) == typeof(string[]))
-            {
-                string[] textStrArr = text as string[];
-                if (textStrArr != null)
-                {
-                    code = ChangeStrArrayIntoStr(textStrArr, true);
-                }
-            }
-
-            else if (typeof(T) == typeof(List<string>))
-            {
-                List<string> stringAsList = text as List<string>;
-                if (stringAsList != null)
-                {
-                    foreach (var item in stringAsList)
-                    {
-                        code = code + item + "\n";
-                    }
-                }
-            }
-            return FilterComments(code);
-        }
+        public static readonly string classWithOutModifiers = @"(class)([\s]{1,}?[\w]+[\s])([:][\s]{1,}?[\w]+(,[\w]+)?)?[\s]+?[{][\s\S]+[}]";
 
         /// <summary>
-        /// Filters comments out of a string starting with XML 
+        /// regex representing the modifiers a class can have
         /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        public static List<string> FilterComments(string code)
-        {
-            code = FilterOutByRegex(code, xmlComments);
-
-            code = FilterOutByRegex(code, comments);
-
-            code = FilterOutByRegex(code, regularComments);
-
-            Regex regex = new Regex(SplittColumns);
-
-            return regex.Split(code).ToList();
-        }
+        public static readonly string classModifiers = @"(public|private|sealed|internal)[\s]{1,}?(static|abstaract)?[\s]{1,}?";
 
         /// <summary>
-        /// Combines all elements of a string array into one string, also a new line each time it adds a string-element as default
+        /// regex that matches a class-object
         /// </summary>
-        /// <param name="array">string array</param>
-        /// <param name="newline"> adds a new line of the end of each string</param>
-        /// <returns></returns>
-        public static string ChangeStrArrayIntoStr(string[] array, bool newline = false)
-        {
-            string code = null;
-            string newlineStr = string.Empty;
-            if (newline)
-            {
-                newlineStr = "\n";
-            }
-
-            foreach (var item in array)
-            {
-                code = code + item + newlineStr;
-            }
-
-            return code;
-        }
-
-        /// <summary>
-        /// returns a string with the 
-        /// </summary>
-        /// <param name="code"></param>
-        /// <param name="RegexString"></param>
-        /// <returns></returns>
-        internal static string FilterOutByRegex(string code, string RegexString)
-        {
-            string[] filtered = null;
-            Regex regex = new Regex(RegexString);
-            filtered = regex.Split(code);
-            return ChangeStrArrayIntoStr(filtered);
-
-        }
-
-        /// <summary>
-        /// returns the amount of matches to a given regex
-        /// </summary>
-        /// <param name="code"></param>
-        /// <param name="RegexString"></param>
-        /// <returns></returns>
-        internal static long CountByRegex(string code, string RegexString)
-        {
-            Regex regex = new Regex(RegexString);
-            MatchCollection match = regex.Matches(code);
-            return match.Count;
-        }
-
-        /// <summary>
-        /// returns the amount of wrongly placed comments
-        /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        public static long CountAllWronglyPlacedComments(string code)
-        {
-            string wrongplacement = @".{1}";
-            long amount = 0;
-            amount = CountByRegex(code, wrongplacement + xmlComments);
-            code = FilterOutByRegex(code, xmlComments);
-            amount = amount + CountByRegex(code, wrongplacement + comments);
-            code = FilterOutByRegex(code, comments);
-            amount = amount + CountByRegex(code, wrongplacement + regularComments);
-            return amount;
-        }
-
-        /// <summary>
-        /// returns all comments in a text
-        /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        public static long CountAllComments(string code)
-        {
-            long amount = 0;
-            amount = CountByRegex(code,xmlComments);
-            code = FilterOutByRegex(code, xmlComments);
-            amount = amount + CountByRegex(code,comments);
-            code = FilterOutByRegex(code, comments);
-            amount = amount + CountByRegex(code,regularComments);
-            return amount;
-        }
-
-        /// <summary>
-        /// Returns all text matching a given regex as a list of strings
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="regexString"></param>
-        /// <returns></returns>
-        public static List<string> ReturnAllMatches(string text, string regexString)
-        {
-            List<string> matches = new List<string>();
-
-            Regex regex = new Regex(regexString);
-
-            MatchCollection collection = regex.Matches(text);
-
-            for (int i = 0; i < collection.Count; i++)
-            {
-                matches.Add(collection[i].Value);
-            }
-
-            return matches;
-        }
-
-        /// <summary>
-        /// returns the acces modifiers to a method or anything really that has the same name
-        /// </summary>
-        /// <param name="method"></param>
-        /// <returns></returns>
-        public static AccessModifiers GetAccesModifier(string text)
-        {
-            Regex regex = new Regex(accesModifier);
-
-            Match match = regex.Match(text);
-
-            return ParseEnum<AccessModifiers>(match.Value);
-
-        }
-
-        /// <summary>
-        /// tries to identify a modifier inside the text, returns the first match  
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static Modifiers GetModifiers(string text)
-        {
-            string modifiers = @"(Abstract|Async|Const|Event|Extern|In|Out|Override|Readonly|Sealed|Static|Unsafe|Virtial|Volatile";
-            Regex regex = new Regex(modifiers);
-            Match match = regex.Match(text);
-
-            return ParseEnum<Modifiers>(match.Value);
-        }
-
-        /// <summary>
-        /// Compares an enum to a string and returns the corrispondig value
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public static T ParseEnum<T>(string value)
-        {
-            return (T)Enum.Parse(typeof(T), value, true);
-        }
-
-        /// <summary>
-        /// returns the start as well as the end position of an expresion in the text
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="regexString"></param>
-        /// <returns></returns>
-        public static int[] GetStartAndEndByRegex(string text, string regexString)
-        {
-            int[] values = new int[2];
-
-            Regex regex = new Regex(regexString);
-
-            //ToDo
-
-            return values;
-        }
-
-        /// <summary>
-        /// replace a text-snippet matching the regex with an emtpy string
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="regexString"></param>
-        /// <returns></returns>
-        public static string ReplaceRegex(string text, string regexString)
-        {
-            Regex regex = new Regex(regexString);
-            return regex.Replace(text,string.Empty);
-        }
-
-        /// <summary>
-        /// replace a text-snippet matching the regex with the replacment string
-        /// </summary>
-        /// <param name="text"></param>
-        /// <param name="regexString"></param>
-        /// <param name="replacment"></param>
-        /// <returns></returns>
-        public static string ReplaceRegex(string text, string regexString, string replacment)
-        {
-            Regex regex = new Regex(regexString);
-            return regex.Replace(text, replacment);
-        }
-
-
+        public static readonly string classWithModifiers = @"((public|private|sealed|internal)[\s]{1,}?(static|abstaract)?[\s]{1,}?)?(class)([\s]{1,}?[\w]+[\s])([:][\s]{1,}?[\w]+(,[\w]+)?)?[\s]+?[{][\s\S]+[}]";
 
     }
 }

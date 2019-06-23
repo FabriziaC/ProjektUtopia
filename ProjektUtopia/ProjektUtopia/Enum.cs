@@ -5,7 +5,10 @@
     Public,
     Protected,
     Internal,
-    Private
+    Private,
+    PrivateInternal,
+    PrivateSealed,
+    None
   }
 
   public enum Modifiers
@@ -23,6 +26,7 @@
     Static,
     Unsafe,
     Virtial,
-    Volatile
+    Volatile,
+    None
   }
 }
