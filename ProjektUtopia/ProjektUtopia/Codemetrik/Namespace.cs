@@ -3,13 +3,22 @@ namespace ProjektUtopia
 {
   public class Namespace
   {
-<<<<<<< Updated upstream
     List<Class> _class;
 
-    public Namespace()
-    {
+        public Namespace()
+        {
+        }
 
-=======
+    public string Name;
+    List<Class> _class;
+
+
+    public Namespace() { }
+        public Namespace(string name, List<Class> classes)
+        {
+            Name = name;
+        }
+
     public string Name;
     List<Class> _class;
 
@@ -24,7 +33,11 @@ namespace ProjektUtopia
     public void AddNewClass(List<Class> classes)
     {
             _class = classes;
->>>>>>> Stashed changes
+    }
+
+    public void AddNewClass(List<Class> classes)
+    {
+            _class = classes;
     }
   }
 }
