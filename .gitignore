@@ -1,12 +1,4 @@
 
-ProjektUtopia/.vs/ProjektUtopia/v16/Server/sqlite3/storage.ide-wal
-ProjektUtopia/.vs/ProjektUtopia/v16/.suo
-ProjektUtopia/.vs/ProjektUtopia/v16/Server/sqlite3/db.lock
-ProjektUtopia/.vs/ProjektUtopia/v16/Server/sqlite3/storage.ide
-ProjektUtopia/.vs/ProjektUtopia/v16/Server/sqlite3/storage.ide-shm
-ProjektUtopia/ProjektUtopia/bin/Debug/ProjektUtopia.exe
-ProjektUtopia/ProjektUtopia/bin/Debug/ProjektUtopia.pdb
-ProjektUtopia/ProjektUtopia/obj/Debug/ProjektUtopia.csproj.CoreCompileInputs.cache
-ProjektUtopia/ProjektUtopia/obj/Debug/ProjektUtopia.csprojAssemblyReference.cache
-ProjektUtopia/ProjektUtopia/obj/Debug/ProjektUtopia.exe
-ProjektUtopia/ProjektUtopia/obj/Debug/ProjektUtopia.pdb
+ProjektUtopia/.vs/
+ProjektUtopia/ProjektUtopia/bin/
+ProjektUtopia/ProjektUtopia/obj/

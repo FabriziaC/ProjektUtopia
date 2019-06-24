@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace ProjektUtopia
@@ -19,7 +18,25 @@ namespace ProjektUtopia
             string filter = ignoreEmptyLine ? @"[^\n|\t|\r]+" : @".+";
             Regex regex = new Regex(filter);
             MatchCollection matches = regex.Matches(code);
-            return matches.Count();
+            return matches.Count;
+        }
+
+        /// <summary>
+        /// Finds non-ascii characters in code (except strings and comments)
+        /// </summary>
+        /// <param name="code">text with lines to count</param>
+        /// <returns></returns>
+        public static int CountNonAsciiChars(string code)
+        {
+            //remove comments and string from code
+            code = Regex.Replace(code, RegexString.regularComments, "");
+            code = Regex.Replace(code, RegexString.comments, "");
+            code = Regex.Replace(code, RegexString.multiLineString, "");
+            code = Regex.Replace(code, RegexString.singleLineString, "");
+            // now look for non-ascii characters
+            Regex regex = new Regex(RegexString.nonAsciiChars);
+            MatchCollection matches = regex.Matches(code);
+            return matches.Count;
         }
 
         /// <summary>
@@ -31,12 +48,42 @@ namespace ProjektUtopia
         {
             List<string> classes = new List<string>();
 
-            classes = ReturnAllMatches(code, Utilities.RegexString.classWithModifiers);
+            //was ist Utilities ...?
+            //classes = ReturnAllMatches(code, Utilities.RegexString.classWithModifiers);
 
             return classes;
         }
 
+        public static List<Namespace> GetAllNameSpaces(string code)
+        {
+            List<Namespace> namespaces = new List<Namespace>();
 
+            List<string> namedspace = ReturnAllMatches(code,RegexString.namespaces);
+
+            string name = string.Empty;
+
+            foreach (var item in namedspace)
+            {
+                Namespace space = null;
+                name = ReturnMatch(item,RegexString.namespacesHead);
+                //Check if it is a partial class
+                if (ReturnMatch(name,@"^partial")!= string.Empty)
+                {
+                    space = (from names in namespaces where name == names.Name select names).FirstOrDefault();
+                }
+                else
+                {
+                    space = new Namespace();
+                }
+
+                // am besten unnötige string teile entfernen 
+                space.AddNewClass(GetAllClasses(code));
+
+
+            }
+
+            return namespaces;
+        }
 
 
         public static List<Class> GetAllClasses(string code)
