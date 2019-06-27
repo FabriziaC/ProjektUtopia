@@ -3,19 +3,35 @@ namespace ProjektUtopia
 {
   public class Namespace
   {
-    string _name;
-    List<Class> _class;
+    public string Name;
+    public List<Class> Classes;
+    public string Code { get; set; }
+
 
     public Namespace(string name)
     {
-      _name = name;
+      Name = name;
     }
-
-    public void AddNewClass()
+    public Namespace(string head, string code)
     {
-      //TODO
+            Classes = Helper.GetAllClasses(code);
+            Code = Helper.ReplaceRegex(code,RegexString.classWithModifiers);
+            Name = Helper.ReplaceRegex(head,RegexString.namespacePartial);
+    }    
+
+    public Namespace()
+    {}
+
+    public void AddNewClass(Class klasse)
+    {
+            Classes.Add(klasse);
+    }
+    public void AddNewClasses(List<Class> classes)
+    {
+            Classes.AddRange(classes);
     }
 
+    public void AddNewGlobal() { /*toDO*/}
 
   }
 }

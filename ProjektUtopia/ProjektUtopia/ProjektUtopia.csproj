@@ -52,6 +52,7 @@
     <Compile Include="Codemetrik\Class.cs" />
     <Compile Include="Codemetrik\Method.cs" />
     <Compile Include="Codemetrik\Namespace.cs" />
+    <Compile Include="Codemetrik\Project.cs" />
     <Compile Include="Codemetrik\Propertie.cs" />
     <Compile Include="Enum.cs" />
     <Compile Include="FileManager.cs" />

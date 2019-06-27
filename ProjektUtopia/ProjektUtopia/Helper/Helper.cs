@@ -7,6 +7,24 @@ namespace ProjektUtopia
 {
     public static class Helper
     {
+
+        public static List<Method> GetMethods(string code)
+        {
+            List<Method> methods = new List<Method>();
+
+            List<string> txtMethods = ReturnAllMatches(code,RegexString.methods);
+
+            foreach (var item in txtMethods)
+            {
+                string methodName = ReturnMatch(code,RegexString.methodHead);
+                AccessModifiers access = GetAccesModifier(methodName);
+                Modifiers modifiers = GetModifiers(methodName);
+                //return value needs name to be filtered, parameter list does as well
+                Method method = new Method( methodName,access, modifiers, String.Empty);
+            }
+            return methods;
+        }
+
         /// <summary>
         /// Counts all lines in a txt-file
         /// </summary>
@@ -20,7 +38,7 @@ namespace ProjektUtopia
             MatchCollection matches = regex.Matches(code);
             return matches.Count;
         }
-
+        
         /// <summary>
         /// Finds non-ascii characters in code (except strings and comments)
         /// </summary>
@@ -28,6 +46,7 @@ namespace ProjektUtopia
         /// <returns></returns>
         public static int CountNonAsciiChars(string code)
         {
+            //the order in witch you filter out needs to be clear , as xml comments can match teh regular comments mask 
             //remove comments and string from code
             code = Regex.Replace(code, RegexString.regularComments, "");
             code = Regex.Replace(code, RegexString.comments, "");
@@ -37,6 +56,7 @@ namespace ProjektUtopia
             Regex regex = new Regex(RegexString.nonAsciiChars);
             MatchCollection matches = regex.Matches(code);
             return matches.Count;
+
         }
 
         /// <summary>
@@ -47,13 +67,15 @@ namespace ProjektUtopia
         public static List<string> GetAllClassesAsText(string code)
         {
             List<string> classes = new List<string>();
-
-            //was ist Utilities ...?
-            //classes = ReturnAllMatches(code, Utilities.RegexString.classWithModifiers);
-
+            classes = ReturnAllMatches(code, RegexString.classWithModifiers);
             return classes;
         }
 
+        /// <summary>
+        /// returns Objects representing namespaces with all the Classes, checks for each namespace if its a partial and adds code + name
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
         public static List<Namespace> GetAllNameSpaces(string code)
         {
             List<Namespace> namespaces = new List<Namespace>();
@@ -70,18 +92,18 @@ namespace ProjektUtopia
                 if (ReturnMatch(name,@"^partial")!= string.Empty)
                 {
                     space = (from names in namespaces where name == names.Name select names).FirstOrDefault();
+                    //Adds Code of the partial class to the name space
+                    space.Code += item;
                 }
                 else
                 {
-                    space = new Namespace();
+                    //creates a new namespace
+                    space = new Namespace(name,item);
                 }
 
-                // am besten unnötige string teile entfernen 
-                space.AddNewClass(GetAllClasses(code));
-
-
+                // we should remove everything that was filtered out with regex in the next step to see whats left like globals 
+                space.AddNewClasses(GetAllClasses(code));
             }
-
             return namespaces;
         }
 
@@ -365,7 +387,7 @@ namespace ProjektUtopia
         /// <returns></returns>
         public static string ReplaceRegex(string text, string regexString, string replacment)
         {
-            Regex regex = new Regex(regexString);
+            Regex regex = new Regex(regexString); 
             return regex.Replace(text, replacment);
         }
 

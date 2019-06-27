@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Linq;
 
 namespace ProjektUtopia
 {
@@ -9,6 +10,10 @@ namespace ProjektUtopia
       foreach (string path in pathList)
       {
         var textCode = GetCodeOfFile(path);
+                //hier prüfen
+                Project currentProject = new Project();
+
+                currentProject.Namespaces = Helper.GetAllNameSpaces(textCode);
       }
     }
 
