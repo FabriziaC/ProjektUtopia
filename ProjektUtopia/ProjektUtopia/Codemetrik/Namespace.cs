@@ -4,14 +4,12 @@ namespace ProjektUtopia
   public class Namespace
   {
     public string Name;
+    public int Startline;
+    public int Lenght;
     public List<Class> Classes;
     public string Code { get; set; }
+    
 
-
-    public Namespace(string name)
-    {
-      Name = name;
-    }
     public Namespace(string head, string code)
     {
             Classes = Helper.GetAllClasses(code);
@@ -30,7 +28,11 @@ namespace ProjektUtopia
     {
             Classes.AddRange(classes);
     }
-
+    
+    public void FillClasses()
+    {
+        //Fill Clases from txt files later maybe todo
+    }
     public void AddNewGlobal() { /*toDO*/}
 
   }

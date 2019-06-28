@@ -80,6 +80,9 @@ namespace ProjektUtopia
         /// </summary>
         public static readonly string namespaces = @"(partial[\s]+)?namespace[\s](([\w]+)([\.][\w]+)*)[\s]+?[{][\S\s]*[}]";
 
+        /// <summary>
+        /// Regex representing the partial modifier for a namspace
+        /// </summary>
         public static readonly string namespacePartial = @"^(partial[\s]+)";
 
         #endregion
@@ -100,7 +103,10 @@ namespace ProjektUtopia
         /// </summary>
         public static readonly string classWithModifiers = @"((public|private|sealed|internal)[\s]{1,}?(static|abstaract)?[\s]{1,}?)?(class)([\s]{1,}?[\w]+[\s])([:][\s]{1,}?[\w]+(,[\w]+)?)?[\s]+?[{][\s\S]+[}]";
 
-
+        /// <summary>
+        /// regex that matches the class without the content inside the { ...brackets...}
+        /// </summary>
+        public static readonly string classHead = @"((public|private|sealed|internal)[\s]{1,}?(static|abstaract)?[\s]{1,}?)?(class)([\s]{1,}?[\w]+";
         #endregion
 
         #region Method expression

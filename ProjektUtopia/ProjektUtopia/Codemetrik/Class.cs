@@ -5,7 +5,7 @@ namespace ProjektUtopia
   public class Class
   {
     public string Name;
-    public AccessModifiers AccessModifiers;
+    public AccessModifiers AccessModifier;
     public Modifiers Modifiers;
     public List<Propertie> Properties;
     public List<Method> MethodLists;
@@ -26,19 +26,37 @@ namespace ProjektUtopia
     /// </summary>
     /// <param name="name"></param>
     /// <param name="code"></param>
-    public Class(string name, string code)
+    public Class(string code)
     {
-
+            TryFillClass(code);
     }
 
     public Class(string name, AccessModifiers accessModifiers, Modifiers modifiers, List<Propertie> properties,List<Method> methods)
     {
             Name = name;
-            AccessModifiers = accessModifiers;
+            AccessModifier = accessModifiers;
             Modifiers = modifiers;
             Properties = properties;
             MethodLists = methods;
     }
+    
+    public void TryFillClass(string code)
+        {
+            MethodLists = Helper.GetMethods(code);
+            code = Helper.ReplaceRegex(code, RegexString.methods);
+            string classHead = Helper.ReturnMatch(code, RegexString.classHead);
+            AccessModifier = Helper.GetAccesModifier(classHead);
+            if (AccessModifier != AccessModifiers.None)
+            {
+                classHead = Helper.ReplaceRegex(classHead, RegexString.accesModifier);
+            }
+            Modifiers = Helper.GetModifiers(classHead);
+            if (Modifiers != Modifiers.None)
+            {
+                classHead = Helper.ReplaceRegex(classHead, RegexString.classModifiers);
+            }
+            Name = classHead;
+        }
     public void AddNewPropetie(Propertie propertie)
     {
             Properties.Add(propertie);
