@@ -86,29 +86,26 @@ namespace ProjektUtopia
 
             foreach (var item in namedspace)
             {
+                bool partial = false;
                 Namespace space = null;
+                //unclear but has to do for now
+                int startAt = Helper.GetStartPosition(code,item);
                 name = ReturnMatch(item,RegexString.namespacesHead);
-                //Check if it is a partial class
-                if (ReturnMatch(name,@"^partial")!= string.Empty)
+
+                if (Helper.ReturnMatch(name,RegexString.staticModifier) != String.Empty)
                 {
-                    space = (from names in namespaces where name == names.Name select names).FirstOrDefault();
-                    //Adds Code of the partial class to the name space
-                    space.Code += item;
+                    partial = true;
+                    name = Helper.ReturnMatch(name,RegexString.staticModifier);
                 }
-                else
-                {
-                    //creates a new namespace
-                    space = new Namespace(name,item);
-                }
+                space = new Namespace(name,item,startAt,partial);       
 
                 // we should remove everything that was filtered out with regex in the next step to see whats left like globals 
-                space.AddNewClasses(GetAllClasses(code));
+                space.AddNewClasses(GetAllClasses(code,startAt));
             }
             return namespaces;
         }
 
-
-        public static List<Class> GetAllClasses(string code)
+        public static List<Class> GetAllClasses(string code, int startNamespace)
         {
             List<Class> classes = new List<Class>();
             List<string> txtclass = GetAllClassesAsText(code);
@@ -116,22 +113,27 @@ namespace ProjektUtopia
             int lenght = 0;
             string body = string.Empty;
             string name = string.Empty;
-            string leftover = string.Empty;
+
             foreach (var item in txtclass)
             {
-                start = GetStartPosition(code, item);
+                start = startNamespace - GetStartPosition(code, item);
                 lenght = CountAllLines(item, false);
                 body = ReturnMatch(item, RegexString.curvedBracketContent);
 
                 //Signatur der Klasse aus der die restlichen infos gefiltert werden
-                leftover = FilterOutByRegex(item, RegexString.curvedBracketContent);
+                name = FilterOutByRegex(item, RegexString.curvedBracketContent);
 
-               // classes.Add(new Class(leftover, body, start, lenght));
+               classes.Add(new Class(name, body, start, lenght));
 
             }
 
 
             return classes;
+        }
+
+        private static List<Method> GetProperties(string leftover)
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

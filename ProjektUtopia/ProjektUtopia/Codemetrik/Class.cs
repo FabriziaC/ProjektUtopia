@@ -10,7 +10,10 @@ namespace ProjektUtopia
     public List<Propertie> Properties;
     public List<Method> MethodLists;
     public List<string> Errors;
+    public int StartLine { get; set; }
+    public int Lenght { get; set; }
 
+    
     /// <summary>
     /// Empty Konstruktor
     /// </summary>
@@ -40,6 +43,25 @@ namespace ProjektUtopia
             MethodLists = methods;
     }
     
+    public Class(string classHead, string body,int start,int lenght)
+    {
+            StartLine = start;
+            Lenght = lenght;
+            MethodLists = Helper.GetMethods(body);
+
+            AccessModifier = Helper.GetAccesModifier(classHead);
+            if (AccessModifier != AccessModifiers.None)
+            {
+                classHead = Helper.ReplaceRegex(classHead, RegexString.accesModifier);
+            }
+            Modifiers = Helper.GetModifiers(classHead);
+            if (Modifiers != Modifiers.None)
+            {
+                classHead = Helper.ReplaceRegex(classHead, RegexString.classModifiers);
+            }
+            Name = classHead;
+        }
+
     public void TryFillClass(string code)
         {
             MethodLists = Helper.GetMethods(code);

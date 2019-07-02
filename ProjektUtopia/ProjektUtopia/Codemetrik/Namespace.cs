@@ -3,18 +3,22 @@ namespace ProjektUtopia
 {
   public class Namespace
   {
-    public string Name;
-    public int Startline;
-    public int Lenght;
-    public List<Class> Classes;
+    public string Name { get; set; }
+    public int Startline { get; set; }
+    public int Lenght { get; set; }
+    public List<Class> Classes { get; set; }
     public string Code { get; set; }
-    
 
-    public Namespace(string head, string code)
+    private bool partial;
+
+
+    public Namespace(string head, string code,int startline, bool partial = false)
     {
-            Classes = Helper.GetAllClasses(code);
+            Startline = startline;
+            Classes = Helper.GetAllClasses(code,Startline);
             Code = Helper.ReplaceRegex(code,RegexString.classWithModifiers);
             Name = Helper.ReplaceRegex(head,RegexString.namespacePartial);
+            this.partial = partial;
     }    
 
     public Namespace()
