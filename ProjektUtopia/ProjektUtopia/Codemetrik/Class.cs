@@ -12,12 +12,13 @@ namespace ProjektUtopia
     public List<string> Errors;
     public int StartLine { get; set; }
     public int Lenght { get; set; }
+        public string Code { get; internal set; }
 
-    
-    /// <summary>
-    /// Empty Konstruktor
-    /// </summary>
-    public Class()
+
+        /// <summary>
+        /// Empty Konstruktor
+        /// </summary>
+        public Class()
     {
             Properties = new List<Propertie>();
             MethodLists = new List<Method>();

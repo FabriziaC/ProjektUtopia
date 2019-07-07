@@ -8,22 +8,85 @@ namespace ProjektUtopia
     public static class Helper
     {
 
-        public static List<Method> GetMethods(string code)
+
+        #region GetObjects
+        public static List<Method> GetMethods(string code, int startLine = 0)
         {
             List<Method> methods = new List<Method>();
 
-            List<string> txtMethods = ReturnAllMatches(code,RegexString.methods);
+            List<string> txtMethods = ReturnAllMatches(code, RegexString.methods);
 
             foreach (var item in txtMethods)
             {
-                string methodName = ReturnMatch(code,RegexString.methodHead);
+                int startAt = GetPosition(code, item) - startLine;
+                string methodName = ReturnMatch(code, RegexString.methodHead);
                 AccessModifiers access = GetAccesModifier(methodName);
                 Modifiers modifiers = GetModifiers(methodName);
                 //return value needs name to be filtered, parameter list does as well
-                Method method = new Method( methodName,access, modifiers, String.Empty);
+                Method method = new Method(methodName, access, modifiers, String.Empty);
             }
             return methods;
         }
+
+        /// <summary>
+        /// returns Objects representing namespaces with all the Classes, checks for each namespace if its a partial and adds code + name
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns></returns>
+        public static List<Namespace> GetAllNameSpaces(string code, int startofProject =0)
+        {
+            List<Namespace> namespaces = new List<Namespace>();
+
+            List<string> namedspace = ReturnAllMatches(code, RegexString.namespaces);
+
+
+            foreach (var item in namedspace)
+            {
+                bool partial = false;
+                Namespace space = null;
+                //unclear but has to do for now
+                int startAt = GetPosition(code, item) - startofProject;
+                string name = ReturnMatch(item, RegexString.namespacesHead);
+
+                if (Helper.ReturnMatch(name, RegexString.staticModifier) != String.Empty)
+                {
+                    partial = true;
+                    name = Helper.ReturnMatch(name, RegexString.staticModifier);
+                }
+                space = new Namespace(name, item, startAt, partial);
+
+                // we should remove everything that was filtered out with regex in the next step to see whats left like globals 
+                space.AddNewClasses(GetAllClasses(code, startAt));
+            }
+            return namespaces;
+        }
+
+        /// <summary>
+        /// Returns all Classes represented in the string as Class-Objects
+        /// </summary>
+        /// <param name="code">strin representing code</param>
+        /// <param name="startOfNamespace">Start position of the string representing the namespace inside another string representing the whole file</param>
+        /// <returns></returns>
+        public static List<Class> GetAllClasses(string code, int startOfNamespace = 0)
+        {
+            List<Class> classes = new List<Class>();
+            List<string> txtclass = ReturnAllMatches(code, RegexString.classWithModifiers);
+
+            foreach (var item in txtclass)
+            {
+                int start = GetPosition(code, item) - startOfNamespace;
+                int lenght = CountAllLines(item, false);
+                string codeOfClass = ReturnMatch(item, RegexString.curvedBracketContent);
+                string name = FilterOutByRegex(item, RegexString.curvedBracketContent);
+
+                classes.Add(new Class(name, codeOfClass, start, lenght));
+            }
+            return classes;
+        }
+        #endregion
+
+
+
 
         /// <summary>
         /// Counts all lines in a txt-file
@@ -46,7 +109,7 @@ namespace ProjektUtopia
         /// <returns></returns>
         public static int CountNonAsciiChars(string code)
         {
-            //the order in witch you filter out needs to be clear , as xml comments can match teh regular comments mask 
+            //the order in witch you filter out needs to be clear , as regular comments can return a match for parts of an xml - comments  
             //remove comments and string from code
             code = Regex.Replace(code, RegexString.regularComments, "");
             code = Regex.Replace(code, RegexString.comments, "");
@@ -57,137 +120,6 @@ namespace ProjektUtopia
             MatchCollection matches = regex.Matches(code);
             return matches.Count;
 
-        }
-
-        /// <summary>
-        /// Returns all classes represented as a list of strings 
-        /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        public static List<string> GetAllClassesAsText(string code)
-        {
-            List<string> classes = new List<string>();
-            classes = ReturnAllMatches(code, RegexString.classWithModifiers);
-            return classes;
-        }
-
-        /// <summary>
-        /// returns Objects representing namespaces with all the Classes, checks for each namespace if its a partial and adds code + name
-        /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        public static List<Namespace> GetAllNameSpaces(string code)
-        {
-            List<Namespace> namespaces = new List<Namespace>();
-
-            List<string> namedspace = ReturnAllMatches(code,RegexString.namespaces);
-
-            string name = string.Empty;
-
-            foreach (var item in namedspace)
-            {
-                bool partial = false;
-                Namespace space = null;
-                //unclear but has to do for now
-                int startAt = Helper.GetStartPosition(code,item);
-                name = ReturnMatch(item,RegexString.namespacesHead);
-
-                if (Helper.ReturnMatch(name,RegexString.staticModifier) != String.Empty)
-                {
-                    partial = true;
-                    name = Helper.ReturnMatch(name,RegexString.staticModifier);
-                }
-                space = new Namespace(name,item,startAt,partial);       
-
-                // we should remove everything that was filtered out with regex in the next step to see whats left like globals 
-                space.AddNewClasses(GetAllClasses(code,startAt));
-            }
-            return namespaces;
-        }
-
-        public static List<Class> GetAllClasses(string code, int startNamespace)
-        {
-            List<Class> classes = new List<Class>();
-            List<string> txtclass = GetAllClassesAsText(code);
-            int start = 0;
-            int lenght = 0;
-            string body = string.Empty;
-            string name = string.Empty;
-
-            foreach (var item in txtclass)
-            {
-                start = startNamespace - GetStartPosition(code, item);
-                lenght = CountAllLines(item, false);
-                body = ReturnMatch(item, RegexString.curvedBracketContent);
-
-                //Signatur der Klasse aus der die restlichen infos gefiltert werden
-                name = FilterOutByRegex(item, RegexString.curvedBracketContent);
-
-               classes.Add(new Class(name, body, start, lenght));
-
-            }
-
-
-            return classes;
-        }
-
-        private static List<Method> GetProperties(string leftover)
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Filters out all Comments for strings, Lists of strings or string arrays
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static List<string> FilterOutCommentsAdapter<T>(T text) where T : class
-        {
-            string code = null;
-            if (typeof(T) != typeof(string) && typeof(T) != typeof(string[]) && typeof(T) != typeof(List<string>))
-            {
-                throw new Exception("The function requires a string,string[] or List<string> variable");
-            }
-            if (typeof(T) == typeof(string[]))
-            {
-                string[] textStrArr = text as string[];
-                if (textStrArr != null)
-                {
-                    code = ChangeStrArrayIntoStr(textStrArr, true);
-                }
-            }
-
-            else if (typeof(T) == typeof(List<string>))
-            {
-                List<string> stringAsList = text as List<string>;
-                if (stringAsList != null)
-                {
-                    foreach (var item in stringAsList)
-                    {
-                        code = code + item + "\n";
-                    }
-                }
-            }
-            return FilterComments(code);
-        }
-
-        /// <summary>
-        /// Filters comments out of a string starting with XML 
-        /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        public static List<string> FilterComments(string code)
-        {
-            code = FilterOutByRegex(code, RegexString.xmlComments);
-
-            code = FilterOutByRegex(code, RegexString.comments);
-
-            code = FilterOutByRegex(code, RegexString.regularComments);
-
-            Regex regex = new Regex(RegexString.SplittColumns);
-
-            return regex.Split(code).ToList();
         }
 
         /// <summary>
@@ -217,13 +149,12 @@ namespace ProjektUtopia
         /// returns a string without the specidfied regex
         /// </summary>
         /// <param name="code"></param>
-        /// <param name="RegexString"></param>
+        /// <param name="regexAsString"></param>
         /// <returns></returns>
-        public static string FilterOutByRegex(string code, string RegexString)
+        public static string FilterOutByRegex(string code, string regexAsString)
         {
-            string[] filtered = null;
-            Regex regex = new Regex(RegexString);
-            filtered = regex.Split(code);
+            Regex regex = new Regex(regexAsString);
+            string[] filtered = regex.Split(code);
             return ChangeStrArrayIntoStr(filtered);
         }
 
@@ -231,11 +162,11 @@ namespace ProjektUtopia
         /// returns the amount of matches to a given regex
         /// </summary>
         /// <param name="code"></param>
-        /// <param name="RegexString"></param>
+        /// <param name="regexAsString"></param>
         /// <returns></returns>
-        internal static long CountByRegex(string code, string RegexString)
+        internal static long CountByRegex(string code, string regexAsString)
         {
-            Regex regex = new Regex(RegexString);
+            Regex regex = new Regex(regexAsString);
             MatchCollection match = regex.Matches(code);
             return match.Count;
         }
@@ -248,12 +179,11 @@ namespace ProjektUtopia
         public static long CountAllWronglyPlacedComments(string code)
         {
             string wrongplacement = @".{1}";
-            long amount = 0;
-            amount = CountByRegex(code, wrongplacement + RegexString.xmlComments);
+            long amount = CountByRegex(code, wrongplacement + RegexString.xmlComments);
             code = FilterOutByRegex(code, RegexString.xmlComments);
-            amount = amount + CountByRegex(code, wrongplacement + RegexString.comments);
+            amount += CountByRegex(code, wrongplacement + RegexString.comments);
             code = FilterOutByRegex(code, RegexString.comments);
-            amount = amount + CountByRegex(code, wrongplacement + RegexString.regularComments);
+            amount += CountByRegex(code, wrongplacement + RegexString.regularComments);
             return amount;
         }
 
@@ -264,12 +194,11 @@ namespace ProjektUtopia
         /// <returns></returns>
         public static long CountAllComments(string code)
         {
-            long amount = 0;
-            amount = CountByRegex(code, RegexString.xmlComments);
+            long amount = CountByRegex(code, RegexString.xmlComments);
             code = FilterOutByRegex(code, RegexString.xmlComments);
-            amount = amount + CountByRegex(code, RegexString.comments);
+            amount += CountByRegex(code, RegexString.comments);
             code = FilterOutByRegex(code, RegexString.comments);
-            amount = amount + CountByRegex(code, RegexString.regularComments);
+            amount += CountByRegex(code, RegexString.regularComments);
             return amount;
         }
 
@@ -295,6 +224,12 @@ namespace ProjektUtopia
             return matches;
         }
 
+        /// <summary>
+        /// returns the first occurence of a regex as a string found inside another string
+        /// </summary>
+        /// <param name="text">the string to search through</param>
+        /// <param name="regexString">regex to search by</param>
+        /// <returns></returns>
         public static string ReturnMatch(string text, string regexString)
         {
             Regex regex = new Regex(regexString);
@@ -344,39 +279,37 @@ namespace ProjektUtopia
         }
 
         /// <summary>
-        /// returns the start line of a given string
+        /// returns the start line of a given string or -1 if given an invalid string
         /// </summary>
         /// <param name="text"></param>
         /// <param name="regexString"></param>
         /// <returns></returns>
-        public static int GetStartPosition(string text, string stringToFind)
+        public static int GetPosition(string text, string stringToFind)
         {
-            int start = 0;
+            try
+            {
+                int startIndex = text.IndexOf(stringToFind);
+                text = text.Remove(startIndex);
+                Regex regex = new Regex(@".+");
+                MatchCollection matches = regex.Matches(text);
 
-            start = text.IndexOf(stringToFind);
-
-            text = text.Remove(start);
-
-            Regex regex = new Regex(@".+");
-            MatchCollection matches = regex.Matches(text);
-
-            return matches.Count;
+                return matches.Count;
+            }
+            catch (Exception)
+            {
+                return -1;
+            }         
         }
-
-
-
-
-
 
         /// <summary>
         /// replace a text-snippet matching the regex with an emtpy string
         /// </summary>
         /// <param name="text"></param>
-        /// <param name="regexString"></param>
+        /// <param name="regexAsString"></param>
         /// <returns></returns>
-        public static string ReplaceRegex(string text, string regexString)
+        public static string ReplaceRegex(string text, string regexAsString)
         {
-            Regex regex = new Regex(regexString);
+            Regex regex = new Regex(regexAsString);
             return regex.Replace(text, string.Empty);
         }
 
@@ -384,12 +317,12 @@ namespace ProjektUtopia
         /// replace a text-snippet matching the regex with the replacment string
         /// </summary>
         /// <param name="text"></param>
-        /// <param name="regexString"></param>
+        /// <param name="regexAsString"></param>
         /// <param name="replacment"></param>
         /// <returns></returns>
-        public static string ReplaceRegex(string text, string regexString, string replacment)
+        public static string ReplaceRegex(string text, string regexAsString, string replacment)
         {
-            Regex regex = new Regex(regexString); 
+            Regex regex = new Regex(regexAsString); 
             return regex.Replace(text, replacment);
         }
 
