@@ -2,21 +2,19 @@
 
 namespace ProjektUtopia
 {
-  public class Method
+  public class TextAsMethod : CodeAsText
   {
-    public string Name { get; set; }
     public AccessModifiers AccessModifier { get; internal set; }
     public Modifiers Modifiers { get; internal set; }
     public string ReturnValue { get; internal set; }
     public string NotFilteredOut { get;internal  set; }    
     public int Lenght { get; internal set; }
-    public int StartLine { get; internal set; }
-    public Method()
+    public TextAsMethod()
     {
 
     }
 
-    public Method(string name, AccessModifiers accessModifiers, Modifiers modifiers, string returnValue)
+    public TextAsMethod(string name, AccessModifiers accessModifiers, Modifiers modifiers, string returnValue)
         {
             Name = name;
             AccessModifier = accessModifiers;
@@ -27,7 +25,7 @@ namespace ProjektUtopia
 
         }
     
-    public Method(string code, int startLine)
+    public TextAsMethod(string code, int startLine)
         {
             StartLine = startLine;
             Lenght = Helper.CountAllLines(code);
@@ -44,5 +42,15 @@ namespace ProjektUtopia
             ReturnValue = ReturnAndName[0];
             Name = ReturnAndName[1];
         }
-  }
+
+        public override void InitialiseFromCode(string code, int startline)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public override void EvaluateCode()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
 }

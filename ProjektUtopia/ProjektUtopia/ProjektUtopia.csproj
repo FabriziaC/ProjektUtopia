@@ -51,6 +51,7 @@
   <ItemGroup>
     <Compile Include="Codemetrik.cs" />
     <Compile Include="Codemetrik\Class.cs" />
+    <Compile Include="Codemetrik\CodeAsText.cs" />
     <Compile Include="Codemetrik\Method.cs" />
     <Compile Include="Codemetrik\Namespace.cs" />
     <Compile Include="Codemetrik\Project.cs" />

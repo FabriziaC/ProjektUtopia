@@ -2,40 +2,36 @@
 
 namespace ProjektUtopia
 {
-  public class Class
+  public class TextAsClass : CodeAsText
   {
-    public string Name;
     public AccessModifiers AccessModifier;
     public Modifiers Modifiers;
     public List<Propertie> Properties;
-    public List<Method> MethodLists;
+    public List<TextAsMethod> MethodLists;
     public List<string> Errors;
-    public int StartLine { get; set; }
     public int Lenght { get; set; }
-        public string Code { get; internal set; }
-
 
         /// <summary>
         /// Empty Konstruktor
         /// </summary>
-        public Class()
-    {
+        public TextAsClass()
+        {
             Properties = new List<Propertie>();
-            MethodLists = new List<Method>();
+            MethodLists = new List<TextAsMethod>();
             Errors = new List<string>();
-    }
+        }
 
     /// <summary>
     /// Konstruktor responsible for filling the class by it self
     /// </summary>
     /// <param name="name"></param>
     /// <param name="code"></param>
-    public Class(string code)
+    public TextAsClass(string code)
     {
             TryFillClass(code);
     }
 
-    public Class(string name, AccessModifiers accessModifiers, Modifiers modifiers, List<Propertie> properties,List<Method> methods)
+    public TextAsClass(string name, AccessModifiers accessModifiers, Modifiers modifiers, List<Propertie> properties,List<TextAsMethod> methods)
     {
             Name = name;
             AccessModifier = accessModifiers;
@@ -44,7 +40,7 @@ namespace ProjektUtopia
             MethodLists = methods;
     }
     
-    public Class(string classHead, string body,int start,int lenght)
+    public TextAsClass(string classHead, string body,int start,int lenght)
     {
             StartLine = start;
             Lenght = lenght;
@@ -84,15 +80,23 @@ namespace ProjektUtopia
     {
             Properties.Add(propertie);
     }
-    public void AddNewMethode(Method method)
+    public void AddNewMethode(TextAsMethod method)
     {
             MethodLists.Add(method);
     }
-    public void AddNewMethods(List<Method> methods)
+    public void AddNewMethods(List<TextAsMethod> methods)
         {
             MethodLists.AddRange(methods);
         }
 
+        public override void InitialiseFromCode(string code, int startline)
+        {
+            throw new System.NotImplementedException();
+        }
 
-  }
+        public override void EvaluateCode()
+        {
+            throw new System.NotImplementedException();
+        }
+    }
 }

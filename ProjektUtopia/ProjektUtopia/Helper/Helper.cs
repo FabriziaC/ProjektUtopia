@@ -10,9 +10,9 @@ namespace ProjektUtopia
 
 
         #region GetObjects
-        public static List<Method> GetMethods(string code, int startLine = 0)
+        public static List<TextAsMethod> GetMethods(string code, int startLine = 0)
         {
-            List<Method> methods = new List<Method>();
+            List<TextAsMethod> methods = new List<TextAsMethod>();
 
             List<string> txtMethods = ReturnAllMatches(code, RegexString.methods);
 
@@ -23,7 +23,7 @@ namespace ProjektUtopia
                 AccessModifiers access = GetAccesModifier(methodName);
                 Modifiers modifiers = GetModifiers(methodName);
                 //return value needs name to be filtered, parameter list does as well
-                Method method = new Method(methodName, access, modifiers, String.Empty);
+                TextAsMethod method = new TextAsMethod(methodName, access, modifiers, String.Empty);
             }
             return methods;
         }
@@ -33,43 +33,53 @@ namespace ProjektUtopia
         /// </summary>
         /// <param name="code"></param>
         /// <returns></returns>
-        public static List<Namespace> GetAllNameSpaces(string code, int startofProject =0)
+        public static List<TextAsNamespace> GetAllNameSpaces(string code, int startofProject =0)
         {
-            List<Namespace> namespaces = new List<Namespace>();
+            List<TextAsNamespace> namespaces = new List<TextAsNamespace>();
 
             List<string> namedspace = ReturnAllMatches(code, RegexString.namespaces);
 
-
             foreach (var item in namedspace)
             {
-                bool partial = false;
-                Namespace space = null;
+                TextAsNamespace space = null;
                 //unclear but has to do for now
                 int startAt = GetPosition(code, item) - startofProject;
                 string name = ReturnMatch(item, RegexString.namespacesHead);
-
-                if (Helper.ReturnMatch(name, RegexString.staticModifier) != String.Empty)
-                {
-                    partial = true;
-                    name = Helper.ReturnMatch(name, RegexString.staticModifier);
-                }
-                space = new Namespace(name, item, startAt, partial);
-
-                // we should remove everything that was filtered out with regex in the next step to see whats left like globals 
-                space.AddNewClasses(GetAllClasses(code, startAt));
+                space = new TextAsNamespace();
+                space.InitialiseFromCode(item,startAt);
+                namespaces.Add(space);
             }
             return namespaces;
         }
-
+        /// <summary>
+        /// Generic version to fetch objects derived from the CodeAsText class
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="code"></param>
+        /// <param name="regex"></param>
+        /// <param name="startInString"></param>
+        /// <returns></returns>
+        public static List<T> GetObjects<T>(string code,string regex,int startInString =0) where T : CodeAsText,new()
+        {
+            List <T> textObjects = new List<T>();
+            List<string> text = ReturnAllMatches(code, regex);
+            text.ForEach(t => {
+                int startAt = GetPosition(code, t);
+                T listValue = new T();
+                listValue.InitialiseFromCode(t,startAt);
+                textObjects.Add(listValue);
+                }) ;
+            return textObjects;
+        }
         /// <summary>
         /// Returns all Classes represented in the string as Class-Objects
         /// </summary>
         /// <param name="code">strin representing code</param>
         /// <param name="startOfNamespace">Start position of the string representing the namespace inside another string representing the whole file</param>
         /// <returns></returns>
-        public static List<Class> GetAllClasses(string code, int startOfNamespace = 0)
+        public static List<TextAsClass> GetAllClasses(string code, int startOfNamespace = 0)
         {
-            List<Class> classes = new List<Class>();
+            List<TextAsClass> classes = new List<TextAsClass>();
             List<string> txtclass = ReturnAllMatches(code, RegexString.classWithModifiers);
 
             foreach (var item in txtclass)
@@ -79,7 +89,7 @@ namespace ProjektUtopia
                 string codeOfClass = ReturnMatch(item, RegexString.curvedBracketContent);
                 string name = FilterOutByRegex(item, RegexString.curvedBracketContent);
 
-                classes.Add(new Class(name, codeOfClass, start, lenght));
+                classes.Add(new TextAsClass(name, codeOfClass, start, lenght));
             }
             return classes;
         }

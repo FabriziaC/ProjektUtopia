@@ -7,7 +7,7 @@ namespace ProjektUtopia
   {
     public static void Run(string[] pathList)
     {
-     Project currentProject = new Project();
+     TextAsProject currentProject = new TextAsProject();
       foreach (string path in pathList)
       {
         var textCode = GetCodeOfFile(path);
