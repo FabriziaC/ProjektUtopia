@@ -19,17 +19,18 @@ namespace ProjektUtopia
         /// <summary>
         /// Regex to represent a  // comment
         /// </summary>
-        public static readonly string regularComments = @"[/]{2}.*";
+        public static readonly string regularComments = @"[\/]{2}.*";
 
         /// <summary>
         /// Regex represent /*.......*/  comments
         /// </summary>
-        public static readonly string comments = @"?[/]{1}[*]{1}[\s\S]{0,}?[*]{1}[/]{1}";
+        public static readonly string comments = @"\*([^*]|[\r\n]|(\*+([^*/]|[\r\n])))*\*"; // taken from https://blog.ostermiller.org/find-comment
+                                                    
 
         /// <summary>
         /// Regex represent XML-Comments -> /// and hope for the best
         /// </summary>
-        public static readonly string xmlComments = @"[/]{3}[\s]{1}<summary>[\s\S]+<[/]summary>";
+        public static readonly string xmlComments = @"[\/]{3}[\s]{1}<summary>[\s\S]+<[\/]summary>";
 
         /// <summary>
         /// Regex represent single-line string, taken from https://www.regular-expressions.info/examplesprogrammer.html

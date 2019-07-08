@@ -106,6 +106,7 @@ namespace ProjektUtopia
         /// <returns></returns>
         public static int CountAllLines(string code, bool ignoreEmptyLine = true)
         {
+            if (code == null) return 0;
             string filter = ignoreEmptyLine ? @"[^\n|\t|\r]+" : @".+";
             Regex regex = new Regex(filter);
             MatchCollection matches = regex.Matches(code);
@@ -119,6 +120,7 @@ namespace ProjektUtopia
         /// <returns></returns>
         public static int CountNonAsciiChars(string code)
         {
+            if (code == null) return 0;
             //the order in witch you filter out needs to be clear , as regular comments can return a match for parts of an xml - comments  
             //remove comments and string from code
             code = Regex.Replace(code, RegexString.regularComments, "");
@@ -163,6 +165,7 @@ namespace ProjektUtopia
         /// <returns></returns>
         public static string FilterOutByRegex(string code, string regexAsString)
         {
+            if (code == null) return null;
             Regex regex = new Regex(regexAsString);
             string[] filtered = regex.Split(code);
             return ChangeStrArrayIntoStr(filtered);
@@ -222,13 +225,16 @@ namespace ProjektUtopia
         {
             List<string> matches = new List<string>();
 
-            Regex regex = new Regex(regexString);
+            if (text != null) { 
 
-            MatchCollection collection = regex.Matches(text);
+                Regex regex = new Regex(regexString);
 
-            for (int i = 0; i < collection.Count; i++)
-            {
-                matches.Add(collection[i].Value);
+                MatchCollection collection = regex.Matches(text);
+
+                for (int i = 0; i < collection.Count; i++)
+                {
+                    matches.Add(collection[i].Value);
+                }
             }
 
             return matches;

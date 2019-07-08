@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
 
 namespace ProjektUtopia
 {
@@ -43,11 +44,13 @@ namespace ProjektUtopia
         public void AddNewFileToCode(string code)
         {
             InitialiseFromCode(code, 0);
+            Code = code;
             EvaluateCode();
         }
 
         public override void InitialiseFromCode(string code, int startline)
         {
+            if (code == null) return;
             //Add Everything to existing Properties
             List<TextAsNamespace> tempSpace = Helper.GetObjects<TextAsNamespace>(code,RegexString.namespaces,0);
             List<TextAsClass> tempClass = new List<TextAsClass>();
@@ -63,6 +66,7 @@ namespace ProjektUtopia
 
         public override void EvaluateCode()
         {
+            if (Code == null) return;
             LinesOfCode += Helper.CountAllLines(Code);
             AmountOfComments += Helper.CountAllComments(Code);
             AmountOfWronglyPlacedComments += Helper.CountAllWronglyPlacedComments(Code);
