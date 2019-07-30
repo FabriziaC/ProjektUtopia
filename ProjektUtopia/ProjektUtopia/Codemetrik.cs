@@ -3,19 +3,18 @@ using System.Linq;
 
 namespace ProjektUtopia
 {
-  public static class Codemetrik
+  public static class CodeAnalysis
   {
     public static void Run(string[] pathList)
     {
-     TextAsProject currentProject = new TextAsProject();
+            Codemetrik.Classes.TextAsProject currentProject = new Codemetrik.Classes.TextAsProject();
       foreach (string path in pathList)
       {
         var textCode = GetCodeOfFile(path);
                 //hier prüfen
                 //Idea that it initializes everything by it´s self by giving each object a bit of code as well as the start line of that code snippet
                 //Alternativ would be a diffrent dependency would maybe be easier for linq filtering
-                currentProject.AddNewFileToCode(textCode);
-
+                currentProject.AddNewFileToCode(textCode,path);
             }
     }
 

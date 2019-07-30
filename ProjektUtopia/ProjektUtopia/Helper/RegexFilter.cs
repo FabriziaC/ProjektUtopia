@@ -7,10 +7,18 @@ using System.Threading.Tasks;
 
 namespace ProjektUtopia
 {
-    class RegexString
+
+
+    public static class RegexString
     {
         #region common expressions
 
+
+        /// <summary>
+        /// Using System.Text.RegularExpressions; and similar stuff 
+        /// </summary>
+        public static readonly string usingDirectives = @"(using)[\s]+[\w]+([\.][\w]+)*[;]";
+        
         /// <summary>
         /// Regex to splitt a text by new lines
         /// </summary>
@@ -74,19 +82,19 @@ namespace ProjektUtopia
         /// <summary>
         /// string representing the Name of a name space as a regex
         /// </summary>
-        public static readonly string namespacesHead = @"(partial[\s]+)?namespace[\s](([\w]+)([\.][\w]+)*)";
+        public static readonly string namespacesHead = @" namespace[\s](([\w]+)([\.][\w]+)*)";
 
         /// <summary>
         /// string representing the whole namespace as a regex
         /// </summary>
-        public static readonly string namespaces = @"(partial[\s]+)?namespace[\s](([\w]+)([\.][\w]+)*)[\s]+?[{][\S\s]*[}]";
+        public static readonly string namespaces = @"namespace[\s](([\w]+)([\.][\w]+)*)[\s]+?[{][\S\s]*[}]";
 
-        /// <summary>
-        /// Regex representing the partial modifier for a namspace
-        /// </summary>
-        public static readonly string namespacePartial = @"^(partial[\s]+)";
+        public static readonly string enums = @"(public|private|internal)?[\s]*enum[\s]+[\w]+[\s]*[{][\s\S]*[}]";
 
         #endregion
+
+  
+        
 
         #region Classes Expression
         /// <summary>
@@ -102,7 +110,12 @@ namespace ProjektUtopia
         /// <summary>
         /// regex that matches a class-object
         /// </summary>
-        public static readonly string classWithModifiers = @"((public|private|sealed|internal)[\s]{1,}?(static|abstaract)?[\s]{1,}?)?(class)([\s]{1,}?[\w]+[\s])([:][\s]{1,}?[\w]+(,[\w]+)?)?[\s]+?[{][\s\S]+[}]";
+        public static readonly string classWithModifiers = @"((public|private|sealed|internal)[\s]{1,}?(static|abstaract)?[\s]{1,}?)?(partial[\s]+)?(class)([\s]{1,}?[\w]+[\s])([:][\s]{1,}?[\w]+(,[\w]+)?)?[\s]+?[{][\s\S]+[}]";
+
+        /// <summary>
+        /// Regex representing the partial modifier for a namspace
+        /// </summary>
+        public static readonly string classNamePartial = @"^(partial[\s]+)";
 
         /// <summary>
         /// regex that matches the class without the content inside the { ...brackets...}

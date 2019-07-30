@@ -50,12 +50,16 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Codemetrik.cs" />
-    <Compile Include="Codemetrik\Class.cs" />
-    <Compile Include="Codemetrik\CodeAsText.cs" />
-    <Compile Include="Codemetrik\Method.cs" />
-    <Compile Include="Codemetrik\Namespace.cs" />
-    <Compile Include="Codemetrik\Project.cs" />
-    <Compile Include="Codemetrik\Propertie.cs" />
+    <Compile Include="Codemetrik\Classes\txtComments.cs" />
+    <Compile Include="Codemetrik\Classes\txtUsingDerective.cs" />
+    <Compile Include="Codemetrik\Classes\txtClass.cs" />
+    <Compile Include="Codemetrik\Classes\CodeAsText.cs" />
+    <Compile Include="Codemetrik\Classes\txtEnums.cs" />
+    <Compile Include="Codemetrik\Classes\txtFile.cs" />
+    <Compile Include="Codemetrik\Classes\txtMethod.cs" />
+    <Compile Include="Codemetrik\Classes\txtNamespace.cs" />
+    <Compile Include="Codemetrik\Classes\txtProject.cs" />
+    <Compile Include="Codemetrik\Classes\txtPropertie.cs" />
     <Compile Include="Helper\Enum.cs" />
     <Compile Include="FileManager.cs" />
     <Compile Include="Helper\Helper.cs" />

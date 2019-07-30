@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Forms;
 using static ProjektUtopia.FileManager;
-using static ProjektUtopia.Codemetrik;
+using static ProjektUtopia.CodeAnalysis;
 
 namespace ProjektUtopia
 {

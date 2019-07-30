@@ -4,16 +4,15 @@ namespace ProjektUtopia
   public class TextAsNamespace : CodeAsText
   {
 
-    private bool partial;
+
 
 
         #region Constructors
-        public TextAsNamespace(string head, string code,int startline, bool partial = false)
+        public TextAsNamespace(string head, string code,int startline)
     {
             StartLine = startline;
             Code = Helper.ReplaceRegex(code,RegexString.classWithModifiers);
             Name = Helper.ReplaceRegex(head,RegexString.namespacePartial);
-            this.partial = partial;
     }    
 
     public TextAsNamespace()

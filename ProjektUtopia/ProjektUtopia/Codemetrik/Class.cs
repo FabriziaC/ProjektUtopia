@@ -10,6 +10,7 @@ namespace ProjektUtopia
     public List<TextAsMethod> MethodLists;
     public List<string> Errors;
     public int Lenght { get; set; }
+    private bool partial;
 
         /// <summary>
         /// Empty Konstruktor
@@ -76,6 +77,7 @@ namespace ProjektUtopia
             }
             Name = classHead;
         }
+
     public void AddNewPropetie(Propertie propertie)
     {
             Properties.Add(propertie);

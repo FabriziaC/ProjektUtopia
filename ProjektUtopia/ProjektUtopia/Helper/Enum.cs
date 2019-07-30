@@ -29,4 +29,13 @@
     Volatile,
     None
   }
+
+    /// <summary>
+    /// XML for Documentation, Regular as in /* Single Or Multiline */ , Generic SingelLiners // 
+    /// </summary>
+    public enum CommentNodeType
+    {
+        Xml,Regular,Generic
+
+    }
 }

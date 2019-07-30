@@ -3,54 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace ProjektUtopia
+namespace ProjektUtopia.Codemetrik.Classes
 {
     public static class Helper
     {
-
-
-        #region GetObjects
-        public static List<TextAsMethod> GetMethods(string code, int startLine = 0)
-        {
-            List<TextAsMethod> methods = new List<TextAsMethod>();
-
-            List<string> txtMethods = ReturnAllMatches(code, RegexString.methods);
-
-            foreach (var item in txtMethods)
-            {
-                int startAt = GetPosition(code, item) - startLine;
-                string methodName = ReturnMatch(code, RegexString.methodHead);
-                AccessModifiers access = GetAccesModifier(methodName);
-                Modifiers modifiers = GetModifiers(methodName);
-                //return value needs name to be filtered, parameter list does as well
-                TextAsMethod method = new TextAsMethod(methodName, access, modifiers, String.Empty);
-            }
-            return methods;
-        }
-
-        /// <summary>
-        /// returns Objects representing namespaces with all the Classes, checks for each namespace if its a partial and adds code + name
-        /// </summary>
-        /// <param name="code"></param>
-        /// <returns></returns>
-        public static List<TextAsNamespace> GetAllNameSpaces(string code, int startofProject =0)
-        {
-            List<TextAsNamespace> namespaces = new List<TextAsNamespace>();
-
-            List<string> namedspace = ReturnAllMatches(code, RegexString.namespaces);
-
-            foreach (var item in namedspace)
-            {
-                TextAsNamespace space = null;
-                //unclear but has to do for now
-                int startAt = GetPosition(code, item) - startofProject;
-                string name = ReturnMatch(item, RegexString.namespacesHead);
-                space = new TextAsNamespace();
-                space.InitialiseFromCode(item,startAt);
-                namespaces.Add(space);
-            }
-            return namespaces;
-        }
         /// <summary>
         /// Generic version to fetch objects derived from the CodeAsText class
         /// </summary>
@@ -71,32 +27,6 @@ namespace ProjektUtopia
                 }) ;
             return textObjects;
         }
-        /// <summary>
-        /// Returns all Classes represented in the string as Class-Objects
-        /// </summary>
-        /// <param name="code">strin representing code</param>
-        /// <param name="startOfNamespace">Start position of the string representing the namespace inside another string representing the whole file</param>
-        /// <returns></returns>
-        public static List<TextAsClass> GetAllClasses(string code, int startOfNamespace = 0)
-        {
-            List<TextAsClass> classes = new List<TextAsClass>();
-            List<string> txtclass = ReturnAllMatches(code, RegexString.classWithModifiers);
-
-            foreach (var item in txtclass)
-            {
-                int start = GetPosition(code, item) - startOfNamespace;
-                int lenght = CountAllLines(item, false);
-                string codeOfClass = ReturnMatch(item, RegexString.curvedBracketContent);
-                string name = FilterOutByRegex(item, RegexString.curvedBracketContent);
-
-                classes.Add(new TextAsClass(name, codeOfClass, start, lenght));
-            }
-            return classes;
-        }
-        #endregion
-
-
-
 
         /// <summary>
         /// Counts all lines in a txt-file
@@ -253,7 +183,6 @@ namespace ProjektUtopia
             return match.Value;
         }
 
-
         /// <summary>
         /// returns the acces modifiers to a method or anything really that has the same name
         /// </summary>
@@ -342,6 +271,23 @@ namespace ProjektUtopia
             return regex.Replace(text, replacment);
         }
 
+        public static IEnumerable<txtComments> GetAllComments(string temp, string code, int startline = 0)
+        {
+            List<txtComments> commentNodes = new List<txtComments>();
+            commentNodes.AddRange(GetComments(temp, code, RegexString.xmlComments, CommentNodeType.Xml, startline));
+            commentNodes.AddRange(GetComments(temp, code, RegexString.comments, CommentNodeType.Regular, startline));
+            commentNodes.AddRange(GetComments(temp, code, RegexString.regularComments, CommentNodeType.Generic, startline));
+            return commentNodes;
+        }
 
+        private static IEnumerable<txtComments> GetComments(string temp, string code, string commentType, CommentNodeType nodeType, int startLine)
+        {
+            var commentnodes = Helper.GetObjects<txtComments>(temp, commentType);
+            commentnodes.ForEach(node => {
+                node.StartLine = Helper.GetPosition(code, node.Code) + startLine;
+                node.CommentType = nodeType;
+            });
+            return commentnodes;
+        }
     }
 }
